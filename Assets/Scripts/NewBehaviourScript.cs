@@ -49,50 +49,50 @@ public class NewBehaviourScript : MonoBehaviour {
         var currentCollider = GetCurrentCollider();
         if (currentCollider != null) {
             var currentColliderObject = currentCollider.gameObject;
+            /* "ball" で始まってたら・・・ */
             if (currentColliderObject.name.IndexOf("ball") != -1) {
                 RemovableBallList = new List<GameObject>();
                 FirstBall = currentColliderObject;
                 CurrentBallName = currentColliderObject.name;
             }
-        }
-    }
-
-    private void OnDragEnd() {
-        if (FirstBall != null) {
-            if (RemovableBallList.Count >= 3) {
-                foreach (GameObject obj in RemovableBallList) {
-                    Destroy(obj);
-                    DropBalls(1);
-                }
-            }
-        } else {
-            foreach (GameObject obj in RemovableBallList) {
-                var listedBall = obj;
-                listedBall.name = listedBall.name.Substring(0, 1);
-            }
-            FirstBall = null;
-        }
-    }
-
-    private void OnDragging() {
-        var currentCollider = GetCurrentCollider();
-        Debug.Log(currentCollider);
-        if (currentCollider != null) {
-            var currentColliderObject = currentCollider.gameObject;
-            if (currentColliderObject.name == CurrentBallName) {
-                if (LastBall != currentColliderObject) {
-                    var dist = Vector2.Distance(LastBall.transform.position, currentColliderObject.transform.position);
-                    if (dist <= 1.5) {
-                        PushToList(currentColliderObject);
-                    }
-                }
-            }
+            Debug.Log("REMOVABLEBALLLIST" + RemovableBallList);
+            Debug.Log("FIRSTBALL" + FirstBall);
+            Debug.Log("CURRENTBALLNAME" + CurrentBallName);
         }
     }
 
     private Collider2D GetCurrentCollider() {
         RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(Input.mousePosition), Vector2.zero);
         return hit.collider;
+    }
+
+    private void OnDragEnd() {
+        if (FirstBall != null) { /* 最初のボールじゃなくて */
+            if (RemovableBallList.Count >= 3) { /* 消すボールのリストに３つはいっている */
+                foreach (GameObject obj in RemovableBallList) { /* 全部のボールを消して１つ追加する */
+                    Destroy(obj);
+                    DropBalls(1);
+                }
+            }
+        } else { /* 消すボールのリストに３つはいってないないとき */
+            foreach (GameObject obj in RemovableBallList) {
+                var listedBall = obj;
+                listedBall.name = listedBall.name.Substring(0, 1);
+                RemovableBallList = new List<GameObject>();
+            }
+        }
+        FirstBall = null;
+    }
+
+    private void OnDragging() {
+        var currentCollider = GetCurrentCollider();
+        if (currentCollider != null) {
+            var currentColliderObject = currentCollider.gameObject;
+            if (currentColliderObject.name == CurrentBallName) {
+                Debug.Log("YESSSSSS!");
+                PushToList(currentColliderObject);
+            }
+        }
     }
 
     private void PushToList(GameObject obj) {
