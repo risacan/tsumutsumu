@@ -96,11 +96,11 @@ public class NewBehaviourScript : MonoBehaviour {
         LastBall = obj;
         RemovableBallList.Add(obj);
         obj.name = "_" + obj.name;
-        ChangeColor(obj);
+        ChangeColor(obj, 0.5f);
     }
-    private void ChangeColor(GameObject obj) {
+    private void ChangeColor(GameObject obj, float transparency) {
         var ballTexture = obj.GetComponent<SpriteRenderer>();
-        ballTexture.color = new Color(255.0f, 255.0f, 255.0f, 0.5f);
+        ballTexture.color = new Color(255.0f, 255.0f, 255.0f, transparency);
 
     }
 }
