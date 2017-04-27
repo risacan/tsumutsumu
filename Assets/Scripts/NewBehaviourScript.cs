@@ -55,9 +55,6 @@ public class NewBehaviourScript : MonoBehaviour {
                 FirstBall = currentColliderObject;
                 CurrentBallName = currentColliderObject.name;
             }
-            Debug.Log("REMOVABLEBALLLIST" + RemovableBallList);
-            Debug.Log("FIRSTBALL" + FirstBall);
-            Debug.Log("CURRENTBALLNAME" + CurrentBallName);
         }
     }
 
@@ -99,5 +96,11 @@ public class NewBehaviourScript : MonoBehaviour {
         LastBall = obj;
         RemovableBallList.Add(obj);
         obj.name = "_" + obj.name;
+        ChangeColor(obj);
+    }
+    private void ChangeColor(GameObject obj) {
+        var ballTexture = obj.GetComponent<SpriteRenderer>();
+        ballTexture.color = new Color(255.0f, 255.0f, 255.0f, 0.5f);
+
     }
 }
