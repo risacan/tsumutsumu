@@ -11,23 +11,23 @@ public class NewBehaviourScript : MonoBehaviour {
     public GameObject BallPrefab;
     public Sprite[] BallSprites;
 
-    private GameObject FirstBall;
-    private List<GameObject> RemovableBallList;
-    private GameObject LastBall;
-    private String CurrentBallName;
+    private GameObject _firstBall;
+    private List<GameObject> _removableBallList;
+    private GameObject _lastBall;
+    private String _currentBallName;
 
 	// Use this for initialization
 	void Start () {
-	    DropBalls(150);
+	    DropBalls(80);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	    if (Input.GetMouseButton(0) && FirstBall == null) {
+	    if (Input.GetMouseButton(0) && _firstBall == null) {
 	        OnDragStart();
-	    } else if (Input.GetMouseButtonUp(0)) {
+	    } else if (Input.GetMouseButtonUp(0)) { /* _firstBall に何か入ってる */
 	        OnDragEnd();
-	    } else if (FirstBall != null) {
+	    } else if (_firstBall != null) { /* _firstBall に何か入ってる */
 	        OnDragging();
 	    }
 	}
@@ -39,7 +39,7 @@ public class NewBehaviourScript : MonoBehaviour {
             var ball = Instantiate(BallPrefab, new Vector3(randomX, 30.0f, 0.0f), Quaternion.identity);
             ball.transform.eulerAngles = new Vector3(0, 0, randomZ);
             int spriteId = Random.Range(0, 4);
-            ball.name = "ball" + spriteId;
+            ball.name = "Ball" + spriteId;
             var ballTexture = ball.GetComponent<SpriteRenderer>();
             ballTexture.sprite = BallSprites[spriteId];
         }
@@ -50,10 +50,11 @@ public class NewBehaviourScript : MonoBehaviour {
         if (currentCollider != null) {
             var currentColliderObject = currentCollider.gameObject;
             /* "ball" で始まってたら・・・ */
-            if (currentColliderObject.name.IndexOf("ball") != -1) {
-                RemovableBallList = new List<GameObject>();
-                FirstBall = currentColliderObject;
-                CurrentBallName = currentColliderObject.name;
+            if (currentColliderObject.name.IndexOf("Ball") != -1) {
+                _removableBallList = new List<GameObject>();
+                _firstBall = currentColliderObject; /* _firstBall に最初のボールを入れる */
+                _currentBallName = currentColliderObject.name;
+                PushToList(currentColliderObject);
             }
         }
     }
@@ -64,40 +65,55 @@ public class NewBehaviourScript : MonoBehaviour {
     }
 
     private void OnDragEnd() {
-        if (FirstBall != null) { /* 最初のボールじゃなくて */
-            if (RemovableBallList.Count >= 3) { /* 消すボールのリストに３つはいっている */
-                foreach (GameObject obj in RemovableBallList) { /* 全部のボールを消して１つ追加する */
+        if (_firstBall != null) {
+            /* 最初のボールじゃなくて */
+            if (_removableBallList.Count >= 3) {
+                /* 消すボールのリストに３つはいっている */
+                foreach (GameObject obj in _removableBallList) {
+                    /* 全部のボールを消して１つ追加する */
                     Destroy(obj);
                     DropBalls(1);
                 }
-            }
-        } else { /* 消すボールのリストに３つはいってないないとき */
-            foreach (GameObject obj in RemovableBallList) {
-                var listedBall = obj;
-                listedBall.name = listedBall.name.Substring(0, 1);
-                RemovableBallList = new List<GameObject>();
+            } else {
+                /* 1つか2つはいってる */
+                foreach (GameObject obj in _removableBallList) {
+                    /* 全部のボールを消して１つ追加する */
+                    var listedBall = obj;
+                    ChangeColor(obj, 1.0f);
+                    _removableBallList = new List<GameObject>();
+                    listedBall.name = listedBall.name.Substring(1, 5);
+                }
             }
         }
-        FirstBall = null;
+        Debug.Log(_removableBallList);
+        _firstBall = null;
     }
 
     private void OnDragging() {
         var currentCollider = GetCurrentCollider();
         if (currentCollider != null) {
             var currentColliderObject = currentCollider.gameObject;
-            if (currentColliderObject.name == CurrentBallName) {
-                Debug.Log("YESSSSSS!");
-                PushToList(currentColliderObject);
+            if (currentColliderObject.name == _currentBallName) {
+                Debug.Log("YESSSSSS SAME BALLNAME!");
+                if (_lastBall != currentColliderObject) {
+                    Debug.Log("Gonna show distance");
+                    var dist = Vector3.Distance(_lastBall.transform.position, currentColliderObject.transform.position);
+                    Debug.Log("distance =" + dist);
+                    if (dist <= 4.0f) {
+                        PushToList(currentColliderObject);
+                    }
+                }
             }
         }
     }
 
     private void PushToList(GameObject obj) {
-        LastBall = obj;
-        RemovableBallList.Add(obj);
+        _lastBall = obj;
+        _removableBallList.Add(obj);
         obj.name = "_" + obj.name;
         ChangeColor(obj, 0.5f);
     }
+
     private void ChangeColor(GameObject obj, float transparency) {
         var ballTexture = obj.GetComponent<SpriteRenderer>();
         ballTexture.color = new Color(255.0f, 255.0f, 255.0f, transparency);
