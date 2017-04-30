@@ -18,7 +18,7 @@ public class NewBehaviourScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	    DropBalls(80);
+	    DropBalls(50);
 	}
 	
 	// Update is called once per frame
@@ -42,6 +42,8 @@ public class NewBehaviourScript : MonoBehaviour {
             ball.name = "Ball" + spriteId;
             var ballTexture = ball.GetComponent<SpriteRenderer>();
             ballTexture.sprite = BallSprites[spriteId];
+            StartCoroutine(WaitForSeconds(1.0f));
+
         }
     }
 
@@ -99,7 +101,7 @@ public class NewBehaviourScript : MonoBehaviour {
                     Debug.Log("Gonna show distance");
                     var dist = Vector3.Distance(_lastBall.transform.position, currentColliderObject.transform.position);
                     Debug.Log("distance =" + dist);
-                    if (dist <= 4.0f) {
+                    if (dist <= 10.0f) {
                         PushToList(currentColliderObject);
                     }
                 }
@@ -118,5 +120,9 @@ public class NewBehaviourScript : MonoBehaviour {
         var ballTexture = obj.GetComponent<SpriteRenderer>();
         ballTexture.color = new Color(255.0f, 255.0f, 255.0f, transparency);
 
+    }
+
+    IEnumerator WaitForSeconds(float time) {
+        yield return new WaitForSeconds(time);
     }
 }
