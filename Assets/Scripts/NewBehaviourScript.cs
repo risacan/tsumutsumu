@@ -5,6 +5,7 @@ using System.Security.AccessControl;
 using NUnit.Framework.Internal.Execution;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -66,6 +67,10 @@ public class NewBehaviourScript : MonoBehaviour {
         _timerText.text = "Finished";
         OnDragEnd();
         _isPlaying = false;
+    }
+
+    public void Reset() {
+        SceneManager.LoadScene("Main");
     }
 
     private void  DropBalls(int count) {
