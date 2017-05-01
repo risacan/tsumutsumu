@@ -101,7 +101,7 @@ public class NewBehaviourScript : MonoBehaviour {
                     Debug.Log("Gonna show distance");
                     var dist = Vector3.Distance(_lastBall.transform.position, currentColliderObject.transform.position);
                     Debug.Log("distance =" + dist);
-                    if (dist <= 10.0f) {
+                    if (dist <= 4.0f) {
                         PushToList(currentColliderObject);
                     }
                 }
