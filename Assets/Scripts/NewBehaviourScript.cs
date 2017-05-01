@@ -2,37 +2,73 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Security.AccessControl;
+using NUnit.Framework.Internal.Execution;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class NewBehaviourScript : MonoBehaviour {
 
     public GameObject BallPrefab;
     public Sprite[] BallSprites;
+    public GameObject Timer;
 
     private GameObject _firstBall;
     private List<GameObject> _removableBallList;
     private GameObject _lastBall;
     private String _currentBallName;
+    private Boolean _isPlaying;
+    private Text _timerText;
+    private int _timeLimit = 60;
+    private int _countTime = 5;
 
 	// Use this for initialization
 	void Start () {
+	    _timerText = Timer.GetComponent<Text>();
+	    StartCoroutine(CountDown());
 	    DropBalls(50);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	    if (Input.GetMouseButton(0) && _firstBall == null) {
-	        OnDragStart();
-	    } else if (Input.GetMouseButtonUp(0)) { /* _firstBall に何か入ってる */
-	        OnDragEnd();
-	    } else if (_firstBall != null) { /* _firstBall に何か入ってる */
-	        OnDragging();
+	    if (_isPlaying) {
+	        if (Input.GetMouseButton(0) && _firstBall == null) {
+	            OnDragStart();
+	        } else if (Input.GetMouseButtonUp(0)) { /* _firstBall に何か入ってる */
+	            OnDragEnd();
+	        } else if (_firstBall != null) { /* _firstBall に何か入ってる */
+	            OnDragging();
+	        }
 	    }
 	}
 
-     private void  DropBalls(int count) {
+    IEnumerator CountDown() {
+        var count = _countTime;
+        while (count > 0) {
+            _timerText.text = count.ToString();
+            yield return new WaitForSeconds (1.0f);
+            count -= 1;
+        }
+        _timerText.text = "START!";
+        _isPlaying = true;
+        yield return new WaitForSeconds (1.0f);
+        StartCoroutine(StartTimer());
+    }
+
+    IEnumerator StartTimer() {
+        var count = _timeLimit;
+        while (count > 0) {
+            _timerText.text = count.ToString();
+            yield return new WaitForSeconds (1.0f);
+            count -= 1;
+        }
+        _timerText.text = "Finished";
+        OnDragEnd();
+        _isPlaying = false;
+    }
+
+    private void  DropBalls(int count) {
         for (var i = 0; i < count; i++) {
             var randomX = Random.Range(-0.5f, 0.5f);
             float randomZ = Random.Range(-20.0f, 20.0f);
@@ -123,6 +159,7 @@ public class NewBehaviourScript : MonoBehaviour {
     }
 
     IEnumerator WaitForSeconds(float time) {
+        Debug.Log("まって〜！");
         yield return new WaitForSeconds(time);
     }
 }
