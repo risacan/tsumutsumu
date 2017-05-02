@@ -26,6 +26,7 @@ public class NewBehaviourScript : MonoBehaviour {
     private int _timeLimit = 60;
     private int _countTime = 5;
     private int _point;
+    private int _Ascore;
 
 	// Use this for initialization
 	void Start () {
@@ -121,6 +122,13 @@ public class NewBehaviourScript : MonoBehaviour {
                     DropBalls(1);
                     _point ++;
                     Scores.GetComponent<Text>().text = _point.ToString();
+                    if (obj.name == "_" + "Ball0") {
+                        _Ascore++;
+                    }
+                    if (_Ascore > 5) {
+                        A.GetComponent<Text>().color = Color.red;
+                    }
+                    Debug.Log("Ascore : " + _Ascore);
                 }
             } else {
                 /* 1つか2つはいってる */
