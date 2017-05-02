@@ -14,6 +14,7 @@ public class NewBehaviourScript : MonoBehaviour {
     public GameObject BallPrefab;
     public Sprite[] BallSprites;
     public GameObject Timer;
+    public GameObject Scores;
 
     private GameObject _firstBall;
     private List<GameObject> _removableBallList;
@@ -23,6 +24,7 @@ public class NewBehaviourScript : MonoBehaviour {
     private Text _timerText;
     private int _timeLimit = 60;
     private int _countTime = 5;
+    private int _point;
 
 	// Use this for initialization
 	void Start () {
@@ -116,6 +118,8 @@ public class NewBehaviourScript : MonoBehaviour {
                     /* 全部のボールを消して１つ追加する */
                     Destroy(obj);
                     DropBalls(1);
+                    _point ++;
+                    Scores.GetComponent<Text>().text = _point.ToString();
                 }
             } else {
                 /* 1つか2つはいってる */
