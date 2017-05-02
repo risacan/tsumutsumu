@@ -25,7 +25,7 @@ public class NewBehaviourScript : MonoBehaviour {
     private Boolean _isPlaying;
     private Text _timerText;
     private int _timeLimit = 60;
-    private int _countTime = 5;
+    private int _countTime = 3;
     private int _point;
     private int _Ascore;
     private int _Bscore;
@@ -77,6 +77,15 @@ public class NewBehaviourScript : MonoBehaviour {
 
     public void Reset() {
         SceneManager.LoadScene("Main");
+    }
+
+    public void Shuffle() {
+        foreach (GameObject obj in GameObject.FindGameObjectsWithTag("Player") ) {
+            float randomX = Random.Range(-20.0f, 20.0f);
+            obj.GetComponent<Rigidbody2D>().AddForce(new Vector2(randomX * 100, 4000.0f));
+           /* obj.GetComponent<Rigidbody2D>().AddTorque(10.0f);*/
+        }
+        Debug.Log("SHUFFLE!");
     }
 
     private void  DropBalls(int count) {
