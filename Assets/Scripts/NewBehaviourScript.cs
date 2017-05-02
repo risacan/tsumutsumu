@@ -28,7 +28,6 @@ public class NewBehaviourScript : MonoBehaviour {
 	void Start () {
 	    _timerText = Timer.GetComponent<Text>();
 	    StartCoroutine(CountDown());
-	    DropBalls(50);
 	}
 	
 	// Update is called once per frame
@@ -51,6 +50,7 @@ public class NewBehaviourScript : MonoBehaviour {
             yield return new WaitForSeconds (1.0f);
             count -= 1;
         }
+        DropBalls(50);
         _timerText.text = "START!";
         _isPlaying = true;
         yield return new WaitForSeconds (1.0f);
