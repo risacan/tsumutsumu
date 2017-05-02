@@ -16,6 +16,7 @@ public class NewBehaviourScript : MonoBehaviour {
     public GameObject Timer;
     public GameObject Scores;
     public GameObject A;
+    public GameObject B;
 
     private GameObject _firstBall;
     private List<GameObject> _removableBallList;
@@ -27,6 +28,7 @@ public class NewBehaviourScript : MonoBehaviour {
     private int _countTime = 5;
     private int _point;
     private int _Ascore;
+    private int _Bscore;
 
 	// Use this for initialization
 	void Start () {
@@ -124,9 +126,14 @@ public class NewBehaviourScript : MonoBehaviour {
                     Scores.GetComponent<Text>().text = _point.ToString();
                     if (obj.name == "_" + "Ball0") {
                         _Ascore++;
+                    } else if (obj.name == "_" + "Ball3") {
+                        _Bscore++;
                     }
-                    if (_Ascore > 5) {
+                    if (_Ascore >= 5) {
                         A.GetComponent<Text>().color = Color.red;
+                    }
+                    if (_Bscore >= 10) {
+                        B.GetComponent<Text>().color = Color.blue;
                     }
                     Debug.Log("Ascore : " + _Ascore);
                 }
