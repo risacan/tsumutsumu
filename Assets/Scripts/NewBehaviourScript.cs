@@ -15,6 +15,7 @@ public class NewBehaviourScript : MonoBehaviour {
     public Sprite[] BallSprites;
     public GameObject Timer;
     public GameObject Scores;
+    public GameObject A;
 
     private GameObject _firstBall;
     private List<GameObject> _removableBallList;
