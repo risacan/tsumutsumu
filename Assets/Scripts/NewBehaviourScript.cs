@@ -150,11 +150,8 @@ public class NewBehaviourScript : MonoBehaviour {
         if (currentCollider != null) {
             var currentColliderObject = currentCollider.gameObject;
             if (currentColliderObject.name == _currentBallName) {
-                Debug.Log("YESSSSSS SAME BALLNAME!");
                 if (_lastBall != currentColliderObject) {
-                    Debug.Log("Gonna show distance");
                     var dist = Vector3.Distance(_lastBall.transform.position, currentColliderObject.transform.position);
-                    Debug.Log("distance =" + dist);
                     if (dist <= 4.0f) {
                         PushToList(currentColliderObject);
                     }
