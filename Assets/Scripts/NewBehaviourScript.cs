@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Security.AccessControl;
 using NUnit.Framework.Internal.Execution;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
@@ -18,6 +19,7 @@ public class NewBehaviourScript : MonoBehaviour {
     public GameObject A;
     public GameObject B;
     public GameObject C;
+    public GameObject BombPrefab;
 
     private GameObject _firstBall;
     private List<GameObject> _removableBallList;
@@ -101,8 +103,11 @@ public class NewBehaviourScript : MonoBehaviour {
             var ballTexture = ball.GetComponent<SpriteRenderer>();
             ballTexture.sprite = BallSprites[spriteId];
             StartCoroutine(WaitForSeconds(1.0f));
-
         }
+    }
+
+    private void DropBomb(int count) {
+        var bomb = Instantiate(BombPrefab, new Vector3(0, 30.0f, 0), Quaternion.identity);
     }
 
     private void OnDragStart() {
@@ -153,6 +158,9 @@ public class NewBehaviourScript : MonoBehaviour {
                         Debug.Log("Ascore : " + _Ascore);
                     }
                 }
+                if (_removableBallList.Count > 5) {
+                    DropBomb(1);
+                }
             } else {
                 /* 1つか2つはいってる */
                 foreach (GameObject obj in _removableBallList) {
@@ -197,7 +205,6 @@ public class NewBehaviourScript : MonoBehaviour {
     }
 
     IEnumerator WaitForSeconds(float time) {
-        Debug.Log("まって〜！");
         yield return new WaitForSeconds(time);
     }
 }

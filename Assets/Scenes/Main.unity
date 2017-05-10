@@ -655,6 +655,7 @@ MonoBehaviour:
   A: {fileID: 2075665774}
   B: {fileID: 1180655980}
   C: {fileID: 125050512}
+  BombPrefab: {fileID: 1710330156615496, guid: d8e8bb81524bb43b491d6c3792c54c5f, type: 2}
 --- !u!1 &970716524
 GameObject:
   m_ObjectHideFlags: 0
