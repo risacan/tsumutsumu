@@ -17,6 +17,7 @@ public class NewBehaviourScript : MonoBehaviour {
     public GameObject Scores;
     public GameObject A;
     public GameObject B;
+    public GameObject C;
 
     private GameObject _firstBall;
     private List<GameObject> _removableBallList;
@@ -29,6 +30,7 @@ public class NewBehaviourScript : MonoBehaviour {
     private int _point;
     private int _Ascore;
     private int _Bscore;
+    private int _Cscore;
 
 	// Use this for initialization
 	void Start () {
@@ -137,14 +139,19 @@ public class NewBehaviourScript : MonoBehaviour {
                         _Ascore++;
                     } else if (obj.name == "_" + "Ball3") {
                         _Bscore++;
+                    } else if (obj.name == "_" + "Ball2") {
+                        _Cscore++;
                     }
-                    if (_Ascore >= 5) {
-                        A.GetComponent<Text>().color = Color.red;
+                    if (_Ascore >= 10) {
+                        A.GetComponent<Text>().color = Color.blue;
                     }
                     if (_Bscore >= 10) {
                         B.GetComponent<Text>().color = Color.blue;
                     }
-                    Debug.Log("Ascore : " + _Ascore);
+                    if (_Cscore >= 10) {
+                        C.GetComponent<Text>().color = Color.blue;
+                        Debug.Log("Ascore : " + _Ascore);
+                    }
                 }
             } else {
                 /* 1つか2つはいってる */
